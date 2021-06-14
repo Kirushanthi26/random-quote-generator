@@ -1,23 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import React,{useState} from 'react';
+import axios from 'axios';
 
 function App() {
+
+  const [addQuote, setAddQuote] = useState("");
+
+  const handleClick = async(e)=>{
+    e.preventDefault();
+
+    const url = "https://api.adviceslip.com/advice";
+    const response = await axios.get(url);
+
+    const addQuote = await response.data.slip.advice;
+    setAddQuote(addQuote);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1>Random Quote</h1>
+      <div className="quote_box" value={addQuote}>{addQuote}</div>
+      <button onClick={handleClick}>Give me Quote</button>
     </div>
   );
 }
